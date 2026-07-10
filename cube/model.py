@@ -168,27 +168,7 @@ class Cube:
             else:
                 print(f"Invalid move: {move}")
 
-    def get_first_block_heuristic(self):
-        mismatches = 0
-
-        for r in [1, 2]:
-            for c in range(3):
-                if self.State["L"][r][c] != "o":
-                    mismatches += 1
-
-        if self.State["F"][1][0] != "g":
-            mismatches += 1
-        if self.State["F"][2][0] != "g":
-            mismatches += 1
-
-        if self.State["D"][0][0] != "y":
-            mismatches += 1
-        if self.State["D"][1][0] != "y":
-            mismatches += 1
-
-        if self.State["B"][1][2] != "b":
-            mismatches += 1
-        if self.State["B"][2][2] != "b":
-            mismatches += 1
-
-        return mismatches
+    def copy(self):
+        new_cube = Cube()
+        new_cube.State = {face: [row.copy() for row in rows] for face, rows in self.State.items()}
+        return new_cube
