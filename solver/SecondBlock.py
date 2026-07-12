@@ -20,15 +20,15 @@ def get_second_block_heuristic(cube: Cube) -> int:
 
 def solve_second_block_A_star_with_pdb(start_cube) -> str:
     move_pool = [
-        "U", "UPrime", "U2",
-        "R", "RPrime", "R2",
-        "M", "MPrime", "M2"
+        "U", "U'", "U2",
+        "R", "R'", "R2",
+        "M", "M'", "M2"
     ]
 
     inverse_moves = {
-        "U": "UPrime", "UPrime": "U", "U2": "U2",
-        "R": "RPrime", "RPrime": "R", "R2": "R2",
-        "M": "MPrime", "MPrime": "M", "M2": "M2"
+        "U": "U'", "U'": "U", "U2": "U2",
+        "R": "R'", "R'": "R", "R2": "R2",
+        "M": "M'", "M'": "M", "M2": "M2"
     }
 
     h_start = get_second_block_heuristic(start_cube)
@@ -46,7 +46,7 @@ def solve_second_block_A_star_with_pdb(start_cube) -> str:
     print(f"[A* PDB] Search started. Exact distance to goal: {h_start} moves.")
 
     while frontier:
-        f, g, _, path, last_move, current_cube = heapq.heappop(frontier)
+        _, g, _, path, last_move, current_cube = heapq.heappop(frontier)
         states_evaluated += 1
 
         if get_second_block_heuristic(current_cube) == 0:
@@ -62,7 +62,7 @@ def solve_second_block_A_star_with_pdb(start_cube) -> str:
             if last_move and move[0] == last_move[0]:
                 continue
 
-            getattr(current_cube, move)()
+            getattr(current_cube, "Exec")(move)
             next_cube_hash = get_cube_hash(current_cube)
 
             if next_cube_hash not in explored:
@@ -80,7 +80,7 @@ def solve_second_block_A_star_with_pdb(start_cube) -> str:
                     (f_next, g_next, counter, new_path, move, next_cube_copy),
                 )
 
-            getattr(current_cube, inverse_moves[move])()
+            getattr(current_cube, "Exec")(inverse_moves[move])
 
     print("\n[A* PDB] No solution found.")
     return "-"

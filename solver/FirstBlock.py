@@ -36,25 +36,25 @@ def get_first_block_heuristic(cube: Cube):
 def solve_first_block_A_star(start_cube) -> str:
     move_pool = [
         "U",
-        "UPrime",
+        "U'",
         "U2",
         "R",
-        "RPrime",
+        "R'",
         "R2",
         "F",
-        "FPrime",
+        "F'",
         "F2",
         "L",
-        "LPrime",
+        "L'",
         "L2",
         "M",
-        "MPrime",
+        "M'",
         "M2",
         "B",
-        "BPrime",
+        "B'",
         "B2",
         "D",
-        "DPrime",
+        "D'",
         "D2",
     ]
 
@@ -95,7 +95,7 @@ def solve_first_block_A_star(start_cube) -> str:
                 continue
 
             next_cube = current_cube.copy()
-            getattr(next_cube, move)()
+            getattr(next_cube, "Exec")(move)
 
             next_cube_hash = get_cube_hash(next_cube)
             if next_cube_hash not in explored:
