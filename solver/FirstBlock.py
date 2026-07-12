@@ -1,6 +1,7 @@
 import heapq
 
 from cube.model import Cube
+from solver.common import get_cube_hash
 
 
 def get_first_block_heuristic(cube: Cube):
@@ -32,15 +33,7 @@ def get_first_block_heuristic(cube: Cube):
     return wrong_pieces
 
 
-def get_cube_hash(cube: Cube):
-    result = ""
-    for face in ["U", "F", "R", "D", "B", "L"]:
-        for row in cube.State[face]:
-            result += "".join(row)
-    return result
-
-
-def solve_first_block_A_star(start_cube):
+def solve_first_block_A_star(start_cube) -> str:
     move_pool = [
         "U",
         "UPrime",
@@ -56,6 +49,7 @@ def solve_first_block_A_star(start_cube):
         "L2",
         "M",
         "MPrime",
+        "M2",
         "B",
         "BPrime",
         "B2",
@@ -89,7 +83,7 @@ def solve_first_block_A_star(start_cube):
             print(
                 f"\n[A*] Success! Total States: {states_evaluated} | Solved in {g} moves."
             )
-            return path
+            return " ".join(path)
 
         cube_hash = get_cube_hash(current_cube)
         if cube_hash in explored:
@@ -118,4 +112,4 @@ def solve_first_block_A_star(start_cube):
                 )
 
     print("\n[A*] No solution found.")
-    return None
+    return "-"
